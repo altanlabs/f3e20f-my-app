@@ -53,7 +53,7 @@ export default function IndexPage() {
                 <div key={drawer.id} className="flex items-center justify-between p-2 border rounded-lg">
                   <div>
                     <span className="font-medium">Lade {drawer.id}</span>
-                    <Badge variant={drawer.status === 'available' ? 'success' : 'secondary'} className="ml-2">
+                    <Badge variant={drawer.status === 'available' ? 'default' : 'secondary'} className="ml-2">
                       {drawer.status === 'available' ? 'Beschikbaar' : 'In gebruik'}
                     </Badge>
                   </div>
