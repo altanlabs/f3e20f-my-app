@@ -1,64 +1,192 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Search, Box, Tag, Loader2 } from "lucide-react"
+import { 
+  Search, 
+  Box, 
+  Tag, 
+  MoreVertical, 
+  Plus,
+  FileDown,
+  FileUp,
+  RefreshCcw,
+  Settings,
+  Boxes,
+  Tags,
+  MoveUpRight
+} from "lucide-react"
 
-// Temporary mock data until database is connected
-const mockComponents = [
-  { id: 1, name: "ATMega328P", drawer: "A1", quantity: 15, tags: ["MCU", "IC", "Digital"] },
-  { id: 2, name: "10k Resistor", drawer: "B3", quantity: 100, tags: ["Resistor", "Passive"] },
-  { id: 3, name: "100uF Capacitor", drawer: "C2", quantity: 50, tags: ["Capacitor", "Passive"] },
-]
-
-const mockDrawers = [
-  { id: "A1", status: "available", components: 5 },
-  { id: "B3", status: "in-use", components: 8 },
-  { id: "C2", status: "available", components: 3 },
-]
+// Mock data for the dashboard
+const stats = {
+  totalDrawers: 24,
+  activeDrawers: 8,
+  totalComponents: 156,
+  totalTags: 45,
+  lowStock: 12,
+  movements: [
+    { date: '2024-01', count: 45 },
+    { date: '2024-02', count: 52 },
+    { date: '2024-03', count: 38 },
+    { date: '2024-04', count: 65 },
+    { date: '2024-05', count: 48 },
+    { date: '2024-06', count: 58 }
+  ]
+}
 
 export default function IndexPage() {
   return (
     <div className="container mx-auto p-6 space-y-6">
-      {/* Header with Search */}
+      {/* Header with Actions */}
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Elektrische Componenten Inventaris</h1>
+        <h1 className="text-2xl font-bold">Dashboard</h1>
         <div className="flex gap-4">
-          <div className="relative w-64">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Zoek componenten..." className="pl-8" />
-          </div>
-          <Button>
-            <Tag className="mr-2 h-4 w-4" />
-            Tags beheren
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button>
+                <Plus className="mr-2 h-4 w-4" />
+                Acties
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem>
+                <Plus className="mr-2 h-4 w-4" />
+                Nieuw Component
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Tag className="mr-2 h-4 w-4" />
+                Nieuwe Tag
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <FileDown className="mr-2 h-4 w-4" />
+                Importeer Data
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <FileUp className="mr-2 h-4 w-4" />
+                Exporteer Data
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Settings className="mr-2 h-4 w-4" />
+                Instellingen
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Button variant="outline">
+            <RefreshCcw className="mr-2 h-4 w-4" />
+            Ververs
           </Button>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {/* Drawer Status Section */}
-        <Card className="md:col-span-1">
+      {/* Stats Grid */}
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Totaal Laden</CardTitle>
+            <Boxes className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalDrawers}</div>
+            <p className="text-xs text-muted-foreground">
+              {stats.activeDrawers} actief
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Componenten</CardTitle>
+            <Box className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalComponents}</div>
+            <p className="text-xs text-muted-foreground">
+              {stats.lowStock} lage voorraad
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Tags</CardTitle>
+            <Tags className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalTags}</div>
+            <p className="text-xs text-muted-foreground">
+              Voor categorisatie
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Bewegingen</CardTitle>
+            <MoveUpRight className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.movements[stats.movements.length - 1].count}</div>
+            <p className="text-xs text-muted-foreground">
+              Deze maand
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Movement Chart */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Bewegingen Overzicht</CardTitle>
+          <CardDescription>Aantal lade bewegingen per maand</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[200px] w-full">
+            {/* Chart visualization */}
+            <div className="flex items-end justify-between h-full pt-4">
+              {stats.movements.map((month, index) => (
+                <div key={month.date} className="flex flex-col items-center">
+                  <div 
+                    className="bg-primary/10 hover:bg-primary/20 rounded-t w-12 transition-all"
+                    style={{ height: `${(month.count / 70) * 100}%` }}
+                  >
+                    <div 
+                      className="bg-primary w-full rounded-t transition-all" 
+                      style={{ height: '3px' }}
+                    />
+                  </div>
+                  <span className="text-xs text-muted-foreground mt-2">
+                    {month.date.split('-')[1]}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Recent Activity & Quick Actions */}
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+        <Card>
           <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Box className="h-5 w-5" />
-              Laden Status
-            </CardTitle>
+            <CardTitle>Recente Activiteit</CardTitle>
+            <CardDescription>Laatste bewegingen en updates</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {mockDrawers.map((drawer) => (
-                <div key={drawer.id} className="flex items-center justify-between p-2 border rounded-lg">
-                  <div>
-                    <span className="font-medium">Lade {drawer.id}</span>
-                    <Badge variant={drawer.status === 'available' ? 'default' : 'secondary'} className="ml-2">
-                      {drawer.status === 'available' ? 'Beschikbaar' : 'In gebruik'}
-                    </Badge>
+              {[1,2,3].map((_, i) => (
+                <div key={i} className="flex items-center gap-4 p-2 border rounded">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Box className="h-4 w-4" />
                   </div>
-                  <Button variant="outline" size="sm">
-                    Ophalen
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Lade A{i+1} geopend</p>
+                    <p className="text-xs text-muted-foreground">2 minuten geleden</p>
+                  </div>
+                  <Button variant="ghost" size="icon">
+                    <MoreVertical className="h-4 w-4" />
                   </Button>
                 </div>
               ))}
@@ -66,53 +194,32 @@ export default function IndexPage() {
           </CardContent>
         </Card>
 
-        {/* Components Overview Section */}
-        <div className="md:col-span-3">
-          <Tabs defaultValue="all" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="all">Alle Componenten</TabsTrigger>
-              <TabsTrigger value="low">Lage Voorraad</TabsTrigger>
-              <TabsTrigger value="recent">Recent Gebruikt</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="all" className="space-y-4">
-              <Card>
-                <CardContent className="p-0">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Component</TableHead>
-                        <TableHead>Lade</TableHead>
-                        <TableHead>Voorraad</TableHead>
-                        <TableHead>Tags</TableHead>
-                        <TableHead className="text-right">Acties</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {mockComponents.map((component) => (
-                        <TableRow key={component.id}>
-                          <TableCell className="font-medium">{component.name}</TableCell>
-                          <TableCell>{component.drawer}</TableCell>
-                          <TableCell>{component.quantity}</TableCell>
-                          <TableCell>
-                            <div className="flex gap-1">
-                              {component.tags.map((tag, idx) => (
-                                <Badge key={idx} variant="secondary">{tag}</Badge>
-                              ))}
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="outline" size="sm">Details</Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Snelle Acties</CardTitle>
+            <CardDescription>Veel gebruikte functies</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-4">
+              <Button variant="outline" className="h-20 flex flex-col gap-2">
+                <Box className="h-6 w-6" />
+                Open Lade
+              </Button>
+              <Button variant="outline" className="h-20 flex flex-col gap-2">
+                <Plus className="h-6 w-6" />
+                Nieuw Component
+              </Button>
+              <Button variant="outline" className="h-20 flex flex-col gap-2">
+                <Tag className="h-6 w-6" />
+                Beheer Tags
+              </Button>
+              <Button variant="outline" className="h-20 flex flex-col gap-2">
+                <FileDown className="h-6 w-6" />
+                Export Data
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
