@@ -44,7 +44,7 @@ export const hasRole = (requiredRole: string): boolean => {
   const user = getCurrentUser()
   if (!user) return false
 
-  const roles = {
+  const roles: { [key: string]: number } = {
     admin: 4,
     manager: 3,
     operator: 2,
@@ -100,8 +100,11 @@ export const login = async (email: string, password: string) => {
 }
 
 // Protected route HOC
-export const withAuth = (WrappedComponent: React.ComponentType, requiredRole?: string) => {
-  return function WithAuthComponent(props: any) {
+export function withAuth<P extends object>(
+  WrappedComponent: React.ComponentType<P>,
+  requiredRole?: string
+) {
+  return function WithAuthComponent(props: P) {
     if (!isAuthenticated()) {
       window.location.href = '/auth/login'
       return null
