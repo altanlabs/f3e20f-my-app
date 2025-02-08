@@ -27,6 +27,7 @@ import {
 } from "lucide-react"
 import { DatePickerWithRange } from "@/components/ui/date-range-picker"
 import { addDays } from "date-fns"
+import { DateRange } from "react-day-picker"
 
 // Mock data
 const mockMovements = [
@@ -46,7 +47,6 @@ const mockMovements = [
     quantity: 100,
     user: "Peter"
   },
-  // ... meer bewegingen
 ]
 
 const mockLowStock = [
@@ -96,7 +96,7 @@ const exportToCSV = (data: any[], filename: string) => {
 }
 
 export default function ReportsPage() {
-  const [date, setDate] = useState({
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(),
     to: addDays(new Date(), 7),
   })
@@ -155,7 +155,10 @@ export default function ReportsPage() {
               </Select>
             </div>
             <div className="flex-1">
-              <DatePickerWithRange date={date} setDate={setDate} />
+              <DatePickerWithRange 
+                date={dateRange} 
+                setDate={setDateRange}
+              />
             </div>
             <Button 
               variant="outline"
