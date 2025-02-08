@@ -3,6 +3,7 @@ import Layout from './layout'
 import IndexPage from './pages'
 import TagsPage from './pages/tags'
 import ComponentsPage from './pages/components'
+import ReportsPage from './pages/reports'
 import NotFound from './pages/NotFound'
 import { ThemeProvider } from '@/theme/theme-provider'
 
@@ -15,6 +16,7 @@ function App() {
             <Route index element={<IndexPage />} />
             <Route path="tags" element={<TagsPage />} />
             <Route path="components" element={<ComponentsPage />} />
+            <Route path="reports" element={<ReportsPage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
