@@ -22,6 +22,7 @@ import {
   Tags,
   MoveUpRight
 } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 // Mock data for the dashboard
 const stats = {
@@ -41,6 +42,8 @@ const stats = {
 }
 
 export default function IndexPage() {
+  const navigate = useNavigate()
+
   return (
     <div className="container mx-auto p-6 space-y-6">
       {/* Header with Actions */}
@@ -55,11 +58,11 @@ export default function IndexPage() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/components')}>
                 <Plus className="mr-2 h-4 w-4" />
                 Nieuw Component
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/tags')}>
                 <Tag className="mr-2 h-4 w-4" />
                 Nieuwe Tag
               </DropdownMenuItem>
@@ -205,11 +208,19 @@ export default function IndexPage() {
                 <Box className="h-6 w-6" />
                 Open Lade
               </Button>
-              <Button variant="outline" className="h-20 flex flex-col gap-2">
+              <Button 
+                variant="outline" 
+                className="h-20 flex flex-col gap-2"
+                onClick={() => navigate('/components')}
+              >
                 <Plus className="h-6 w-6" />
                 Nieuw Component
               </Button>
-              <Button variant="outline" className="h-20 flex flex-col gap-2">
+              <Button 
+                variant="outline" 
+                className="h-20 flex flex-col gap-2"
+                onClick={() => navigate('/tags')}
+              >
                 <Tag className="h-6 w-6" />
                 Beheer Tags
               </Button>
