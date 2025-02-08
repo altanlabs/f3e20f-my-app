@@ -1,4 +1,5 @@
 import { jwtDecode } from "jwt-decode"
+import React from "react"
 
 interface User {
   id: number
@@ -99,12 +100,14 @@ export const login = async (email: string, password: string) => {
   throw new Error('Invalid credentials')
 }
 
+type ComponentType<P = any> = React.ComponentType<P>;
+
 // Protected route HOC
-export function withAuth<P extends object>(
-  WrappedComponent: React.ComponentType<P>,
+export function withAuth(
+  WrappedComponent: ComponentType,
   requiredRole?: string
 ) {
-  return function WithAuthComponent(props: P) {
+  return function WithAuthComponent(props: any) {
     if (!isAuthenticated()) {
       window.location.href = '/auth/login'
       return null
